@@ -6,6 +6,9 @@ import * as serviceWorker from './serviceWorker';
 
 console.log(1);
 console.log(2);
+console.log(3);
+console.log(4);
+
 function calculateWinner(squares) {
     const lines = [
         [0, 1, 2],
