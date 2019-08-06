@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-
+console.log(1);
 function calculateWinner(squares) {
     const lines = [
         [0, 1, 2],
