@@ -1,153 +1,79 @@
-import React from 'react';
+/* eslint-disable no-useless-constructor */
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { Divider } from 'antd';
+// 由于 antd 组件的默认文案是英文，所以需要修改为中文
+import zhCN from 'antd/es/locale/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import 'antd/dist/antd.css';
+import Game from './components/game';
 
-
-function calculateWinner(squares) {
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
-        }
-    }
-    return null;
-}
+moment(zhCN);
 
 /**
- * 函数式组件
+ *  函数式自定义组件 
  */
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
-}
+function Welcome(props){
+    console.log(arguments);
+    return <h1>Hello, {props.data.name}</h1>;
+ }
 
-class Board extends React.Component {
-
-
-    renderSquare(i) {
-        return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />;
-    }
-
-    render() {
-        return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
-            </div>
-        );
-    }
-}
-
-class Game extends React.Component {
-    constructor(props) {
+class Test extends React.Component {
+    constructor(props){
         super(props)
-        this.state = {
-            history: [{
-                squares: Array(9).fill(null)
-            }],
-            nextIsX: false
-        }
-        this.handleClick = this.handleClick.bind(this);
-        this.jumoTo = this.jumoTo.bind(this);
-    }
-
-    handleClick(i) {
-        const history = this.state.history;
-        const current = history[history.length - 1];
-        const squares = current.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
-            return;
-        }
-        squares[i] = this.state.nextIsX ? 'O' : 'X';
-        this.setState({
-            history: history.concat([{
-                squares: squares,
-            }]),
-            nextIsX: !this.state.flanextIsXg,
-        });
-    }
-
-    jumoTo(i){
-        const arr = [...this.state.history];
-        const arr1 = arr.slice(0,i+1);
-        this.setState({
-            history: arr1,
-            nextIsX : (this.i+1) % 2 === 0 ? true : false
-        })
     }
    
-
-    render() {
-        const history = this.state.history;
-        const current = this.state.history.slice(-1)[0];    //obj
-        const winner = calculateWinner(current.squares);
-
-        let status;
-        if (winner) {
-            status = 'Winner: ' + winner;
-        } else {
-            status = 'Next player: ' + (this.state.nextIsX ? 'O' : 'X');
+    render(){
+        const name = 'czl';
+        const userName = 'demo';
+        const obj = {
+            name : 'deme2'
         }
-
-        const step = history.map((item,index) => {
-            const txt = index ? 'step' + index : 'go back start';
-            return (
-                <li key={index} onClick={ () => {this.jumoTo(index)}}>{txt}</li>
-            )
-        })
-
+        function getGreeting(user) {
+            if (user) {
+              return <h1>Hello, {user}!</h1>;
+            }
+          }
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Board squares={current.squares} onClick={(i) => this.handleClick(i)} />
-                </div>
-                <div className="game-info">
-                    <div>{status}</div>
-                    <ol>{step}</ol>
-                </div>
-            </div>
-        );
+            <Fragment>
+                { 2 + 2 };
+                <p>hello,{name}</p>
+                <p tabIndex="0" className="demo-class">111</p>
+                {getGreeting(userName)}
+                <Welcome data={obj}/>
+            </Fragment>
+        )
     }
 }
 
+
+
+
+class Root extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+            <Fragment>
+                <Game />
+                <Test />
+                <Divider>这是一条占位符</Divider>
+            </Fragment>
+        )
+    }
+}
 // ========================================
 
+// ReactDOM.render(
+//     <Game />,
+//     document.getElementById('root')
+// );
+
 ReactDOM.render(
-    <Game />,
+    // new Root().render(),
+    <Root/>,
     document.getElementById('root')
 );
-
-// ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
