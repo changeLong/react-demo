@@ -30,7 +30,7 @@ class Test extends React.Component {
         const userName = 'demo';
         const obj = {
             name : 'deme2'
-        }
+        };  //jsx传数组
         function getGreeting(user) {
             if (user) {
               return <h1>Hello, {user}!</h1>;
@@ -38,7 +38,7 @@ class Test extends React.Component {
           }
         return (
             <Fragment>
-                { 2 + 2 };
+                { 2 + 2 }
                 <p>hello,{name}</p>
                 <p tabIndex="0" className="demo-class">111</p>
                 {getGreeting(userName)}
