@@ -9,6 +9,8 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
 import Game from './components/game';
+import Clock from './components/clock';
+
 
 moment(zhCN);
 
@@ -16,8 +18,11 @@ moment(zhCN);
  *  函数式自定义组件 
  */
 function Welcome(props){
-    console.log(arguments);
     return <h1>Hello, {props.data.name}</h1>;
+ }
+
+ Welcome.prototype.aaa = function(){
+     console.log(1111);
  }
 
 class Test extends React.Component {
@@ -29,7 +34,7 @@ class Test extends React.Component {
         const name = 'czl';
         const userName = 'demo';
         const obj = {
-            name : 'deme2'
+            name : 'demo2'
         };  //jsx传数组
         function getGreeting(user) {
             if (user) {
@@ -60,6 +65,7 @@ class Root extends React.Component {
             <Fragment>
                 <Game />
                 <Test />
+                <Clock />
                 <Divider>这是一条占位符</Divider>
             </Fragment>
         )

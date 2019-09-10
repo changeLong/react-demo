@@ -101,6 +101,7 @@ class Game extends React.Component {
    
 
     render() {
+        
         const history = this.state.history;
         const current = this.state.history.slice(-1)[0];    //obj
         const winner = calculateWinner(current.squares);
