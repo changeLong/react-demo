@@ -20,9 +20,8 @@ moment(zhCN);
 function Welcome(props){
     return <h1>Hello, {props.data.name}</h1>;
  }
-
- Welcome.prototype.aaa = function(){
-     console.log(1111);
+ Welcome.prototype.componentDidMount = function(){
+    console.log(11111);
  }
 
 class Test extends React.Component {
