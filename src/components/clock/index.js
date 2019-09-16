@@ -36,23 +36,5 @@
     }
  }
 
- class parent {
-    componentDidMount(){
-        console.log('parent');
-    }
- }
-
- class children extends parent {
-     constructor(props){
-       super();
-     }
-
-     componentDidMount(){
-         console.log('children');
-     }
- }
-
- let obj = new children();
- obj.componentDidMount()
 
  export default Clock;

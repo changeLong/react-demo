@@ -10,6 +10,9 @@ import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
 import Game from './components/game';
 import Clock from './components/clock';
+import List from './components/list';
+import Slot from './components/slot';
+import Refdom from './components/refs';
 
 
 moment(zhCN);
@@ -17,36 +20,38 @@ moment(zhCN);
 /**
  *  函数式自定义组件 
  */
-function Welcome(props){
-    return <h1>Hello, {props.data.name}</h1>;
- }
- Welcome.prototype.componentDidMount = function(){
-    console.log(11111);
- }
+function Welcome(props) {
+    return <h3>Hello, {props.data.name}</h3>;
+}
+
+function Nameslot(props){
+    return <p>这是一个具名slot</p>
+}
 
 class Test extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
     }
-   
-    render(){
+
+    render() {
         const name = 'czl';
         const userName = 'demo';
         const obj = {
-            name : 'demo2'
+            name: 'demo2'
         };  //jsx传数组
         function getGreeting(user) {
             if (user) {
-              return <h1>Hello, {user}!</h1>;
+                return <h3>Hello, {user}!</h3>;
             }
-          }
+        }
         return (
             <Fragment>
-                { 2 + 2 }
+                <h2>JSX</h2>
+                {2 + 2}
                 <p>hello,{name}</p>
                 <p tabIndex="0" className="demo-class">111</p>
                 {getGreeting(userName)}
-                <Welcome data={obj}/>
+                <Welcome data={obj} />
             </Fragment>
         )
     }
@@ -63,9 +68,16 @@ class Root extends React.Component {
         return (
             <Fragment>
                 <Game />
+                <Divider></Divider>
                 <Test />
                 <Clock />
-                <Divider>这是一条占位符</Divider>
+                <Divider></Divider>
+                <List />
+                <Divider></Divider>
+                <Slot classname='aaa' nameSlot={ <Nameslot/> }>
+                    <p>这是一个slot</p>
+                </Slot>
+                <Refdom></Refdom>
             </Fragment>
         )
     }
@@ -79,6 +91,6 @@ class Root extends React.Component {
 
 ReactDOM.render(
     // new Root().render(),
-    <Root/>,
+    <Root />,
     document.getElementById('root')
 );
