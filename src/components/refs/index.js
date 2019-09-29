@@ -13,7 +13,7 @@ class Refdom extends React.Component {
         return (
             <>
                 <input ref={this.myRef} onClick= { () => this.handldClick() }></input>
-                <p ref={this.myRef}  onClick= { () => this.handldClick() }>123123123</p>
+                <p ref={this.myRef}  onClick= { () => this.handldClick() }>click me</p>
             </>
         )
     }

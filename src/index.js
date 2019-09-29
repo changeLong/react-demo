@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Divider } from 'antd';
+import { createStore } from 'redux';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -13,9 +14,37 @@ import Clock from './components/clock';
 import List from './components/list';
 import Slot from './components/slot';
 import Refdom from './components/refs';
-
-
+import Counter from './components/redux';
+import { Provider } from 'react-redux';
 moment(zhCN);
+
+const initialState = {
+    count: 1
+}
+
+//reducer
+function reducer(state = initialState, action) {
+    console.log('reducer', state, action);
+    switch (action.type) {
+        case 'INCREMENT':
+            return {
+                count: state.count + 1
+            };
+        case 'DECREMENT':
+            return {
+                count: state.count - 1
+            };
+        default:
+            return state;
+    }
+}  
+
+//redux
+const store = createStore(reducer);
+store.dispatch({ type: "INCREMENT" });
+//或者
+//const store = createStore(reducer,initialState);
+
 
 /**
  *  函数式自定义组件 
@@ -24,7 +53,7 @@ function Welcome(props) {
     return <h3>Hello, {props.data.name}</h3>;
 }
 
-function Nameslot(props){
+function Nameslot(props) {
     return <p>这是一个具名slot</p>
 }
 
@@ -66,7 +95,7 @@ class Root extends React.Component {
     }
     render() {
         return (
-            <Fragment>
+            <Provider store={store}>
                 <Game />
                 <Divider></Divider>
                 <Test />
@@ -74,11 +103,12 @@ class Root extends React.Component {
                 <Divider></Divider>
                 <List />
                 <Divider></Divider>
-                <Slot classname='aaa' nameSlot={ <Nameslot/> }>
+                <Slot classname='aaa' nameSlot={<Nameslot />}>
                     <p>这是一个slot</p>
                 </Slot>
+                <Counter/>
                 <Refdom></Refdom>
-            </Fragment>
+            </Provider>
         )
     }
 }
