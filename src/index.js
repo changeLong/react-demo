@@ -112,12 +112,7 @@ class Root extends React.Component {
         )
     }
 }
-// ========================================
 
-// ReactDOM.render(
-//     <Game />,
-//     document.getElementById('root')
-// );
 
 ReactDOM.render(
     // new Root().render(),

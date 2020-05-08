@@ -4,6 +4,9 @@ import React from 'react';
 class slotDom extends React.Component {
     constructor(props){
         super(props)
+        this.state = {
+            
+        }
         // console.log(props);
     }
 
