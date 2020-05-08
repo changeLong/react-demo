@@ -14,6 +14,7 @@ import Clock from './components/clock';
 import List from './components/list';
 import Slot from './components/slot';
 import Refdom from './components/refs';
+import { Router, Route, Link } from 'react-router'
 import Counter from './components/redux';
 import { Provider } from 'react-redux';
 moment(zhCN);
@@ -44,6 +45,14 @@ const store = createStore(reducer);
 store.dispatch({ type: "INCREMENT" });
 //或者
 //const store = createStore(reducer,initialState);
+
+function routeA(){
+    return <p>this is routeA</p>
+}
+
+function routeB(){
+    return <p>this is routeA</p>
+}
 
 
 /**
@@ -100,6 +109,8 @@ class Root extends React.Component {
                 <Divider></Divider>
                 <Test />
                 <Clock />
+                <Divider></Divider>
+                
                 <Divider></Divider>
                 <List />
                 <Divider></Divider>
