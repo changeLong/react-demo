@@ -13,6 +13,7 @@ import Game from './components/game';
 import Clock from './components/clock';
 import List from './components/list';
 import Slot from './components/slot';
+import Routerarea from './components/router';
 import Refdom from './components/refs';
 import { Router, Route, Link } from 'react-router'
 import Counter from './components/redux';
@@ -110,7 +111,7 @@ class Root extends React.Component {
                 <Test />
                 <Clock />
                 <Divider></Divider>
-                
+                <Routerarea></Routerarea>
                 <Divider></Divider>
                 <List />
                 <Divider></Divider>
