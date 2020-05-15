@@ -1,16 +1,33 @@
 import React from 'react';
 import { BrowserRouter as Router, HashRouter, hashHistory, Route, Link, IndexRoute, Switch, useHistory  } from 'react-router-dom'
+import { createBrowserHistory } from "history";
+const customHistory = createBrowserHistory();
 
+
+console.log(React);
 function Routea(props) {
-    console.log(props.location);
-    return <p>this is route A</p>
+    function historyJump(){
+        props.history.push({
+            pathname : '/routeb',
+            state : {
+                b:1
+            }
+        })
+    }
+    return (
+        <div>
+            <p>this is RouteA</p>
+            <a href="javascript:;" onClick={historyJump}>use this.props.history跳转</a>
+        </div>
+    )
 }
 
-function RoutebChild({ match }) {
-    return <p>this is route b children : {match.params.id}</p>
+function RoutebChild({ match,history,location }) {
+    return <p>嵌套路由（nesting）：this is route b children : {match.params.id}</p>
 }
 
-function Routeb({ match }) {
+function Routeb({ match ,history,location}) {
+    console.log(history,location);
     return (
         <div>
             {['a', 'b', 'c', 'd'].map(item => {
@@ -55,9 +72,7 @@ function HistoryRouter() {
 
 
 class Routerarea extends React.Component {
-    constructor() {
-        super();
-    }
+    
    
     render(h) {
         console.log(this.props.history);
@@ -75,20 +90,16 @@ class Routerarea extends React.Component {
 
         return (
             <div>
-                <HashRouter>
+                <h1>Router</h1>
+                <HashRouter history={customHistory} >
                     <ul>
                         {Linkarr}
-
-                        {/* <a href="javascript:;" onClick={ () => {
-                            history.push('/routea')
-                        }}>11111</a> */}
                     </ul>
                     <HistoryRouter />
                     <Switch>
                         <Route exact path="/" component={routeindex} />
                         <Route path="/routea" component={Routea} />
                         <Route path="/routeb" component={Routeb} />
-
                         <Route component={NoMatch} />
                     </Switch>
                 </HashRouter>
