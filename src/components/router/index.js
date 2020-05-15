@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, IndexRoute, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, HashRouter, hashHistory, Route, Link, IndexRoute, Switch, useHistory  } from 'react-router-dom'
 
-function Routea() {
+function Routea(props) {
+    console.log(props.location);
     return <p>this is route A</p>
 }
 
@@ -26,43 +27,71 @@ function NoMatch() {
     return <p>404</p>
 }
 
-class Scrolltop extends React.Component {
-    componentDidUpdate(prevProps) {
-        console.log(11111);
-        if (this.props.location !== prevProps.location) {
-            window.scrollTo(0, 0);
-        }
-    }
-
-    render() {
-        return this.props.children;
-    }
-}
-
 function routeindex() {
     return <p>this is route Index</p>
 }
 
-class Routerarea extends React.Component {
-    render(h) {
-        function Linkarr() {
-            return ['/', '/routea', '/routeb'].map((item) => {
-                return <li key={item}><Link to={item}>{item}</Link></li>
-            })
+
+function HistoryRouter() {
+    let history = useHistory();
+
+  function handleClick() {
+    history.push({
+        pathname: '/routea',
+        search :'?a=1',
+        state : {
+            name : 2
         }
+    });
+  }
+
+  return (
+    <button type="button" onClick={handleClick}>
+      Go home
+    </button>
+  );
+}
+
+
+
+class Routerarea extends React.Component {
+    constructor() {
+        super();
+    }
+   
+    render(h) {
+        console.log(this.props.history);
+
+        let Linkarr = ['/', '/routea', '/routeb'].map((item) => {
+            if (item === '/routea') {
+                item = {
+                    pathname: '/routea',
+                    state: { name: 1 }
+                }
+            }
+            let label = typeof item === 'object' ? item.pathname : item
+            return <li key={label}><Link to={item}>{label}</Link></li>
+        })
+
         return (
             <div>
-                <Router>
+                <HashRouter>
                     <ul>
-                        <Linkarr />
+                        {Linkarr}
+
+                        {/* <a href="javascript:;" onClick={ () => {
+                            history.push('/routea')
+                        }}>11111</a> */}
                     </ul>
-                    <Scrolltop>
+                    <HistoryRouter />
+                    <Switch>
                         <Route exact path="/" component={routeindex} />
                         <Route path="/routea" component={Routea} />
                         <Route path="/routeb" component={Routeb} />
+
                         <Route component={NoMatch} />
-                    </Scrolltop>
-                </Router>
+                    </Switch>
+                </HashRouter>
             </div>
         )
     }
