@@ -15,7 +15,6 @@ import List from './components/list';
 import Slot from './components/slot';
 import Routerarea from './components/router';
 import Refdom from './components/refs';
-import { Router, Route, Link } from 'react-router'
 import Counter from './components/redux';
 import { Provider } from 'react-redux';
 moment(zhCN);
@@ -41,19 +40,12 @@ function reducer(state = initialState, action) {
     }
 }  
 
-//redux
-const store = createStore(reducer);
+//createStore接受一个方法作为对象，返回store对象，用于生成store
+const store = createStore(reducer); 
+console.log(store)
 store.dispatch({ type: "INCREMENT" });
 //或者
 //const store = createStore(reducer,initialState);
-
-function routeA(){
-    return <p>this is routeA</p>
-}
-
-function routeB(){
-    return <p>this is routeA</p>
-}
 
 
 /**
