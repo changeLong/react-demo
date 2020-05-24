@@ -23,9 +23,8 @@ const initialState = {
     count: 1
 }
 
-//reducer
+//reducer 理解为store的处理器，每个 dispatch 都要经过这里
 function reducer(state = initialState, action) {
-    console.log('reducer', state, action);
     switch (action.type) {
         case 'INCREMENT':
             return {
@@ -40,9 +39,13 @@ function reducer(state = initialState, action) {
     }
 }  
 
-//createStore接受一个方法作为对象，返回store对象，用于生成store
-const store = createStore(reducer); 
-console.log(store)
+//createStore接受一个方法作为对象，返回store对象，用于生成store,每次dispatch 都会执行传入的方法，即reducer
+// const store = createStore(reducer); 
+const store = createStore(function(){
+    console.log(11111)
+    return 1;
+}); 
+// store.dispatch方法会触发 Reducer 的自动执行
 store.dispatch({ type: "INCREMENT" });
 //或者
 //const store = createStore(reducer,initialState);

@@ -4,7 +4,7 @@ import { createBrowserHistory } from "history";
 const customHistory = createBrowserHistory();
 
 
-console.log(React);
+// console.log(React);
 function Routea(props) {
     function historyJump(){
         props.history.push({
