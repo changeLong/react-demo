@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Divider } from 'antd';
-import { createStore } from 'redux';
+import { createStore,combineReducers,applyMiddleware } from 'redux';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -17,32 +17,41 @@ import Routerarea from './components/router';
 import Refdom from './components/refs';
 import Counter from './components/redux';
 import { Provider,connect } from 'react-redux';
+import thunk from 'redux-thunk'
 moment(zhCN);
 
-const initialState = {
-    count: 1
+
+
+// combineReducers reducer
+function handleIncrement(state = 0 , action){
+    if (action.type === 'INCREMENT'){
+        return state+1;
+    }
+    return state;
 }
 
-//reducer 理解为store的处理器，每个 dispatch 都要经过这里
-function reducer(state = initialState, action) {
-    switch (action.type) {
-        case 'INCREMENT':
-            return {
-                count: state.count + 1
-            };
-        case 'DECREMENT':
-            return {
-                count: state.count - 1
-            };
-        default:
-            return state;
-    }
+// 中间件
+function applyMiddleware1(middlewareAPI){
+    return function (dispatch) {
+        return function (action) {
+          console.log('dispatch 前：', middlewareAPI.getState());
+          var returnValue = dispatch(action);
+          console.log('dispatch 后：', middlewareAPI.getState(), '\n');
+          return returnValue;
+        };
+      };
 }
+
+// 合并 combineReducers 的键值为 state 的 key , 默认值就是reducer的默认值
+const reducer = combineReducers({
+    count : handleIncrement
+})
 
 //createStore接受一个方法作为对象，返回store对象，用于生成store,每次dispatch 都会执行传入的方法，即reducer
-const store = createStore(reducer);
+const store = createStore(reducer,applyMiddleware(thunk));
 // store.dispatch方法会触发 Reducer 的自动执行
 store.dispatch({ type: "INCREMENT" });
+console.log(store.getState());
 
 
 
