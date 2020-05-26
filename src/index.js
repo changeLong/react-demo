@@ -16,7 +16,7 @@ import Slot from './components/slot';
 import Routerarea from './components/router';
 import Refdom from './components/refs';
 import Counter from './components/redux';
-import { Provider } from 'react-redux';
+import { Provider,connect } from 'react-redux';
 moment(zhCN);
 
 const initialState = {
@@ -37,18 +37,45 @@ function reducer(state = initialState, action) {
         default:
             return state;
     }
-}  
+}
 
 //createStore接受一个方法作为对象，返回store对象，用于生成store,每次dispatch 都会执行传入的方法，即reducer
-// const store = createStore(reducer); 
-const store = createStore(function(){
-    console.log(11111)
-    return 1;
-}); 
+const store = createStore(reducer);
 // store.dispatch方法会触发 Reducer 的自动执行
 store.dispatch({ type: "INCREMENT" });
-//或者
-//const store = createStore(reducer,initialState);
+
+
+
+class StoreJsx extends React.Component {
+    constructor(props){
+        super(props);
+        this.aa = 1;
+    }
+
+    render() {
+        return (
+            <div>
+                <p onClick={this.props.INCREMENT}>count : {this.props.count}</p>
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        count : state.count
+    }
+}
+
+const dispatchToProps = (dispatch,ownProps) => {
+    return {
+        INCREMENT (){
+            let type = { type: "INCREMENT" };
+            dispatch(type)
+        }
+    }
+}
+StoreJsx = connect(mapStateToProps,dispatchToProps)(StoreJsx);
 
 
 /**
@@ -102,6 +129,7 @@ class Root extends React.Component {
         return (
             <Provider store={store}>
                 <Game />
+                <StoreJsx></StoreJsx>
                 <Divider></Divider>
                 <Test />
                 <Clock />
@@ -113,7 +141,7 @@ class Root extends React.Component {
                 <Slot classname='aaa' nameSlot={<Nameslot />}>
                     <p>这是一个slot</p>
                 </Slot>
-                <Counter/>
+                <Counter />
                 <Refdom></Refdom>
             </Provider>
         )
