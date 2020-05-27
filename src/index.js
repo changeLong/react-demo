@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-constructor */
-import React, { Fragment } from 'react';
+import React, { Fragment,useState,useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Divider } from 'antd';
-import { createStore,combineReducers,applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -14,41 +14,43 @@ import Clock from './components/clock';
 import List from './components/list';
 import Slot from './components/slot';
 import Routerarea from './components/router';
+import Context from './components/context';
 import Refdom from './components/refs';
 import Counter from './components/redux';
-import { Provider,connect } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import thunk from 'redux-thunk'
 moment(zhCN);
 
 
 
 // combineReducers reducer
-function handleIncrement(state = 0 , action){
-    if (action.type === 'INCREMENT'){
-        return state+1;
+function handleIncrement(state = 0, action) {
+    if (action.type === 'INCREMENT') {
+        return state + 1;
     }
     return state;
 }
 
 // 中间件
-function applyMiddleware1(middlewareAPI){
+function applyMiddleware1(middlewareAPI) {
     return function (dispatch) {
         return function (action) {
-          console.log('dispatch 前：', middlewareAPI.getState());
-          var returnValue = dispatch(action);
-          console.log('dispatch 后：', middlewareAPI.getState(), '\n');
-          return returnValue;
+            console.log('dispatch 前：', middlewareAPI.getState());
+            var returnValue = dispatch(action);
+            console.log('dispatch 后：', middlewareAPI.getState(), '\n');
+            return returnValue;
         };
-      };
+    };
 }
 
 // 合并 combineReducers 的键值为 state 的 key , 默认值就是reducer的默认值
 const reducer = combineReducers({
-    count : handleIncrement
+    count: handleIncrement
 })
 
 //createStore接受一个方法作为对象，返回store对象，用于生成store,每次dispatch 都会执行传入的方法，即reducer
-const store = createStore(reducer,applyMiddleware(thunk));
+const store = createStore(reducer, applyMiddleware(applyMiddleware1));
+// const store = createStore(reducer,applyMiddleware(thunk));
 // store.dispatch方法会触发 Reducer 的自动执行
 store.dispatch({ type: "INCREMENT" });
 console.log(store.getState());
@@ -56,7 +58,7 @@ console.log(store.getState());
 
 
 class StoreJsx extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.aa = 1;
     }
@@ -72,19 +74,63 @@ class StoreJsx extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        count : state.count
+        count: state.count
     }
 }
 
-const dispatchToProps = (dispatch,ownProps) => {
+const dispatchToProps = (dispatch, ownProps) => {
     return {
-        INCREMENT (){
+        INCREMENT() {
             let type = { type: "INCREMENT" };
             dispatch(type)
         }
     }
 }
-StoreJsx = connect(mapStateToProps,dispatchToProps)(StoreJsx);
+StoreJsx = connect(mapStateToProps, dispatchToProps)(StoreJsx);
+
+
+function useCommonCount(count) {
+    const [commonCount,setCount] = useState(count);
+
+    useEffect(()=>{
+        // console.log('公有state更新');
+    })
+    // return [commonCount,setCount];
+    return [commonCount,setCount];
+}
+
+function HookArea(props) {
+    // 自定义 hook 不共享组件
+    let [count,setCount] = useCommonCount(0);
+
+    useEffect(()=>{
+        console.log('ui更新触发useEffect');
+    })
+    useEffect(()=>{
+        console.log('触发多个effect');
+    })
+    return (
+        <>
+            <Divider></Divider>
+            <h1>hook</h1>
+            <p onClick={()=> {setCount(count + 1)}}>count : {count};click me add</p>
+            {/* <p >count : {count};click me add</p> */}
+        </>
+    )
+}
+
+function ShareState(props) {
+    let [count,setCount] = useCommonCount(2);
+    
+    return (
+        <>
+            <h1>hook</h1>
+            <p onClick={()=> {setCount(count + 1)}}>共享count : {count}</p>
+            {/* <p >count : {count};click me add</p> */}
+            <Divider></Divider>
+        </>
+    )
+}
 
 
 /**
@@ -138,6 +184,9 @@ class Root extends React.Component {
         return (
             <Provider store={store}>
                 <Game />
+                <Context></Context>
+                <HookArea></HookArea>
+                <ShareState></ShareState>
                 <StoreJsx></StoreJsx>
                 <Divider></Divider>
                 <Test />

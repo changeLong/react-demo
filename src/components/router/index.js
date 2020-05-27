@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, HashRouter, hashHistory, Route, Link, IndexRoute, Switch, useHistory  } from 'react-router-dom'
+import { HashRouter, Route, Link,  Switch, useHistory  } from 'react-router-dom'
 import { createBrowserHistory } from "history";
 const customHistory = createBrowserHistory();
 
