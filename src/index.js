@@ -17,8 +17,9 @@ import Routerarea from './components/router';
 import Context from './components/context';
 import Refdom from './components/refs';
 import Counter from './components/redux';
+import HookArea from './components/hook';
 import { Provider, connect } from 'react-redux';
-import thunk from 'redux-thunk'
+// import thunk from 'redux-thunk'
 moment(zhCN);
 
 
@@ -89,49 +90,6 @@ const dispatchToProps = (dispatch, ownProps) => {
 StoreJsx = connect(mapStateToProps, dispatchToProps)(StoreJsx);
 
 
-function useCommonCount(count) {
-    const [commonCount,setCount] = useState(count);
-
-    useEffect(()=>{
-        // console.log('公有state更新');
-    })
-    // return [commonCount,setCount];
-    return [commonCount,setCount];
-}
-
-function HookArea(props) {
-    // 自定义 hook 不共享组件
-    let [count,setCount] = useCommonCount(0);
-
-    useEffect(()=>{
-        console.log('ui更新触发useEffect');
-    })
-    useEffect(()=>{
-        console.log('触发多个effect');
-    })
-    return (
-        <>
-            <Divider></Divider>
-            <h1>hook</h1>
-            <p onClick={()=> {setCount(count + 1)}}>count : {count};click me add</p>
-            {/* <p >count : {count};click me add</p> */}
-        </>
-    )
-}
-
-function ShareState(props) {
-    let [count,setCount] = useCommonCount(2);
-    
-    return (
-        <>
-            <h1>hook</h1>
-            <p onClick={()=> {setCount(count + 1)}}>共享count : {count}</p>
-            {/* <p >count : {count};click me add</p> */}
-            <Divider></Divider>
-        </>
-    )
-}
-
 
 /**
  *  函数式自定义组件 
@@ -185,8 +143,9 @@ class Root extends React.Component {
             <Provider store={store}>
                 <Game />
                 <Context></Context>
+                <Divider></Divider>
                 <HookArea></HookArea>
-                <ShareState></ShareState>
+                <Divider></Divider>
                 <StoreJsx></StoreJsx>
                 <Divider></Divider>
                 <Test />
